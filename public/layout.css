@@ -1,0 +1,12 @@
+
+body{background-color: #ffffff
+}
+
+#wrapper{
+    width: 720px; margin:auto;
+}
+#information{border: solid 1px gray; margin:10px; padding: 10px; text-align: center}
+#txtemail, #txtname, #txtphone{ margin:5px;}
+#listuser{text-align:center ;}
+.listlearn{border-bottom: solid 1px #b3e0e0 ;}
+
