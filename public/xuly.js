@@ -6,7 +6,6 @@ socket.on("server_send_list",function(data){
         $("#ds").append("<div class=\"listlearn\">" +
             "<div class=\"hang1\">Mã dự thưởng: "+index+" || <span style=\"color:#782a2a\">"+
             list.name+" - "+list.email+" - "+list.phone+" </span></div> \n" +
-
             "</div>")
 
     })

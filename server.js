@@ -20,7 +20,7 @@ io.on("connection", function (socket) {
         arrayList.push(
             new ListLearn(data.name,data.email,data.phone)
         )
-        io.sockets.emit("server_send_list",arrayList )
+        io.sockets.emit("server_send_list",arrayList.reverse() )
     })
 
 
