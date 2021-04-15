@@ -10,6 +10,7 @@ console.log("Server Success..!");
 server.listen(3000);
 
 const arrayList = []
+let maduthuong = ""
 
 io.on("connection", function (socket) {
 
@@ -18,19 +19,26 @@ io.on("connection", function (socket) {
 
     socket.on("client_send",function (data){
         arrayList.push(
-            new ListLearn(data.name,data.email,data.phone)
+            new ListLearn(data.name,data.email,data.phone,maduthuong)
         )
         io.sockets.emit("server_send_list",arrayList.reverse() )
     })
 
+    socket.on("client_send_random",function (data){
+        console.log("random :", data)
+        io.sockets.emit("server_send_random",data)
+        maduthuong = data
+
+    })
 
 })
 
 
-function ListLearn(name, email, phone){
+function ListLearn(name, email, phone, madt){
     this.name = name;
     this.email = email;
     this.phone = phone;
+    this.madt = madt
 }
 
 app.get("/", function (req, res) {
