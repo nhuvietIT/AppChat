@@ -5,7 +5,7 @@ const arrayList = []
 let voucher = ""
 module.exports = (router, io) => {
 
-    // on() method firebase
+    // on() once() method firebase
     firebase.database().ref('danhsachduthuong').once('value',   function(data) {
         data.forEach(function(keyval) {
             let childKey = keyval.key;
