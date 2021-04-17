@@ -7,9 +7,9 @@ module.exports = (router, io) => {
         const name = req.body.name
         const email = req.body.email
         const phone = req.body.phone
-        const maduthuong = req.body.maduthuong
+        const voucher = req.body.voucher
 
-        fun_table_realtime_firebase.CreateDatabase_Firebase(name, email,phone,maduthuong)
+        fun_table_realtime_firebase.CreateDatabase_Firebase(name, email,phone,voucher)
             .then(result => {
                 res.json(result)
             })
@@ -25,7 +25,7 @@ module.exports = (router, io) => {
     });
 
     const arrayList = []
-    let maduthuong = ""
+    let voucher = ""
     let findDuplicates = arrayList => arrayList.filter((item, index) => arrayList.indexOf(item) !== index)
 
     io.on("connection", function (socket) {
@@ -41,11 +41,11 @@ module.exports = (router, io) => {
                     io.sockets.emit("server_send_list", arrayList)
                     socket.emit("server_send_check_phone","Đăng kí dự thưởng thành công.!")
                     arrayList.push(
-                        new ListLearns(data.name, data.email, data.phone, maduthuong)
+                        new ListLearns(data.name, data.email, data.phone, voucher)
                     )
 
                     //====> Save firebase
-                    fun_table_realtime_firebase.CreateDatabase_Firebase(data.name, data.email, data.phone, maduthuong)
+                    fun_table_realtime_firebase.CreateDatabase_Firebase(data.name, data.email, data.phone, voucher)
                         .then(result => {
                             res.json(result)
                         })
@@ -58,7 +58,7 @@ module.exports = (router, io) => {
                         io.sockets.emit("server_send_list", arrayList)
                         socket.emit("server_send_check_phone","Đăng kí dự thưởng thành công.!")
                         //====> Save firebase
-                        fun_table_realtime_firebase.CreateDatabase_Firebase(data.name, data.email, data.phone, maduthuong)
+                        fun_table_realtime_firebase.CreateDatabase_Firebase(data.name, data.email, data.phone, voucher)
                             .then(result => {
                                 res.json(result)
                             })
@@ -66,7 +66,7 @@ module.exports = (router, io) => {
                         //====> end Save firebase
 
                         arrayList.push(
-                            new ListLearns(data.name, data.email, data.phone, maduthuong)
+                            new ListLearns(data.name, data.email, data.phone, voucher)
                         )
 
 
@@ -86,7 +86,7 @@ module.exports = (router, io) => {
         socket.on("client_send_random", function (data) {
             console.log("random :", data)
             socket.emit("server_send_random", data)
-            maduthuong = data
+            voucher = data
         })
     })
 
