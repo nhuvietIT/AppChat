@@ -1,8 +1,13 @@
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.set("views", "./views");
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 const httpServer = require("http").createServer(app);
 const options = { /* ... */ };
 

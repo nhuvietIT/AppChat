@@ -1,4 +1,21 @@
+
+const fun_table_realtime_firebase = require("../funtion/fun_Table_Realtime_Firebase")
+const firebase = require("firebase")
 module.exports = (router, io) => {
+
+    router.post('/savedata',function(req,res){
+        const name = req.body.name
+        const email = req.body.email
+        const phone = req.body.phone
+        const maduthuong = req.body.maduthuong
+
+        fun_table_realtime_firebase.CreateDatabase_Firebase(name, email,phone,maduthuong)
+            .then(result => {
+                res.json(result)
+            })
+            .catch(err => res.status(err.status).json({message: err.message}))
+
+    })
 
     router.get('/', function (req, res, next) {
         res.render("trangchu");
@@ -26,14 +43,33 @@ module.exports = (router, io) => {
                     arrayList.push(
                         new ListLearns(data.name, data.email, data.phone, maduthuong)
                     )
+
+                    //====> Save firebase
+                    fun_table_realtime_firebase.CreateDatabase_Firebase(data.name, data.email, data.phone, maduthuong)
+                        .then(result => {
+                            res.json(result)
+                        })
+                        .catch(err => res.status(err.status).json({message: err.message}))
+                    //====> end Save firebase
+
                 } else {
                     console.log("Đã có mảng data và giá trị là : ", inArray(data.phone, arrayList))
                     if (inArray(data.phone, arrayList) === false) {
                         io.sockets.emit("server_send_list", arrayList)
                         socket.emit("server_send_check_phone","Đăng kí dự thưởng thành công.!")
+                        //====> Save firebase
+                        fun_table_realtime_firebase.CreateDatabase_Firebase(data.name, data.email, data.phone, maduthuong)
+                            .then(result => {
+                                res.json(result)
+                            })
+                            .catch(err => res.status(err.status).json({message: err.message}))
+                        //====> end Save firebase
+
                         arrayList.push(
                             new ListLearns(data.name, data.email, data.phone, maduthuong)
                         )
+
+
                     } else {
                         io.sockets.emit("server_send_list", arrayList)
                         socket.emit("server_send_check_phone","Số điện thoại đã đăng kí dự thưởng, hãy nhập số khác !")
@@ -53,6 +89,9 @@ module.exports = (router, io) => {
             maduthuong = data
         })
     })
+
+
+
 
     function ListLearns(name, email, phone, madt) {
         this.name = name;
