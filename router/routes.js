@@ -1,7 +1,22 @@
 
 const fun_table_realtime_firebase = require("../funtion/fun_Table_Realtime_Firebase")
 const firebase = require("firebase")
+const arrayList = []
+let voucher = ""
 module.exports = (router, io) => {
+
+    // on() method firebase
+    firebase.database().ref('danhsachduthuong').once('value',   function(data) {
+        data.forEach(function(keyval) {
+            let childKey = keyval.key;
+            let childData = keyval.val();
+            console.log("KT : ", childKey + " va "+ childData.voucher)
+            arrayList.push(
+                new ListLearns(childData.name, childData.email, childData.phone, childData.voucher)
+            )
+        });
+    });
+
 
     router.post('/savedata',function(req,res){
         const name = req.body.name
@@ -24,9 +39,8 @@ module.exports = (router, io) => {
         res.render("admin");
     });
 
-    const arrayList = []
-    let voucher = ""
-    let findDuplicates = arrayList => arrayList.filter((item, index) => arrayList.indexOf(item) !== index)
+
+
 
     io.on("connection", function (socket) {
 
